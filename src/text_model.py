@@ -12,7 +12,7 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 class AnalysisModel:
     def perform_analysis(self, text):
-        # Definimos la funcion que le pasaremos al modelo de openai para obtener el análisis de texto
+        # Definimos la función que le pasaremos al modelo de OpenAI para obtener el análisis de texto
         ner_gpt_function = [
             {
                 "name": "find_juridics",
@@ -38,15 +38,16 @@ class AnalysisModel:
             }
         ]
 
-        # Hacemos la busqueda usando GPT-4
-        response = openai.ChatCompletion.create(
+        # Hacemos la búsqueda usando GPT-4 para la información jurídica
+        response_juridic = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": text}],
             functions=ner_gpt_function,
             function_call={"name": "find_juridics"},
         )
 
-        cleaned_string = response['choices'][0]['message']['function_call']['arguments'].replace("\\n", "\n")
+        # Devuelve una combinación de la información jurídica, puntos resolutivos y otro aspecto importante
+        cleaned_string = response_juridic['choices'][0]['message']['function_call']['arguments'].replace("\\n", "\n")
         parsed_object = json.loads(cleaned_string)
 
         return parsed_object
