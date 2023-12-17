@@ -8,20 +8,28 @@ function App() {
 
   const analyzeText = async () => {
     try {
+      const requestBody = { text: text };
+      console.log("Request Body:", requestBody);
       const response = await fetch("http://127.0.0.1:8000/analysis", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: "SENTENCIA DEFINITIVA. EN CIUDAD OBREGÓN, SONORA, A CUATRO DE NOVIEMBRE DE DOS MIL TRECE. - ... (tu texto completo)" }),
+        body: JSON.stringify(requestBody),
       });
+  
+      if (!response.ok) {
+        throw new Error(`Failed with status: ${response.status}`);
+      }
   
       const data = await response.json();
       setResult(data);
     } catch (error) {
-      console.error("Error analyzing text:", error);
+      console.error("Error analyzing text:", error.message);
     }
   };
+  
+  
 
   const getStatus = async () => {
     try {

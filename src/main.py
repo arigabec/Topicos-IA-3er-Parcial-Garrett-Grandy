@@ -31,7 +31,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 text_model = AnalysisModel()
 
 @app.get("/status")
