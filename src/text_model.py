@@ -9,7 +9,6 @@ load_dotenv()  # Cargamos el archivo .env
 _SETTINGS = get_settings()
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-
 class AnalysisModel:
     def perform_analysis(self, text):
         # Definimos la función que le pasaremos al modelo de OpenAI para obtener el análisis de texto

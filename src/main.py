@@ -26,11 +26,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Reemplaza con la URL de tu frontend
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 text_model = AnalysisModel()
 
 @app.get("/status")
@@ -64,7 +65,12 @@ def analyze_text(text: str):
 
     execution_logs.append(log)
 
-    return doc
+    print(doc["entities"])
+
+    if not doc["entities"]:
+        return "Verifica que el texto enviado sea un texto jurídico!"
+    else:
+        return doc
 
 @app.get("/reports")
 def generate_report():

@@ -9,13 +9,12 @@ function App() {
   const analyzeText = async () => {
     try {
       const requestBody = { text: text };
-      console.log("Request Body:", requestBody);
-      const response = await fetch("http://127.0.0.1:8000/analysis", {
+      console.log("Request Body:", requestBody.text);
+      const response = await fetch("http://127.0.0.1:8000/analysis?text=" + requestBody.text, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody),
       });
   
       if (!response.ok) {
