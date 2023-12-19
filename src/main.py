@@ -13,15 +13,37 @@ from src.config import get_settings
 from functools import cache
 from src.text_model import AnalysisModel
 from datetime import datetime
+from sqlmodel import Field, SQLModel, create_engine, Session
+from contextlib import asynccontextmanager
+
+sqlite_file = "db.sqlite3"
+sqlite_url = f"sqlite:///{sqlite_file}"
+
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+def get_session():
+    with Session(engine) as session:
+        yield session
 
 # Colocamos en una lista los datos de cada request de /analysis
 execution_logs = []
 
 _SETTINGS = get_settings()
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Creamos la base de datos
+    create_db_and_tables()
+    yield
+
 app = FastAPI(
     title=_SETTINGS.service_name,
-    version=_SETTINGS.k_revision
+    version=_SETTINGS.k_revision,
+    lifespan=lifespan
 )
 
 app.add_middleware(
@@ -46,7 +68,7 @@ def root():
     }
 
 @app.post("/analysis")
-def analyze_text(text: str):
+def analyze_text(text: str, db: Session = Depends(get_session)):
     start_time = datetime.now()
 
     # Llama al modelo de análisis
@@ -55,6 +77,7 @@ def analyze_text(text: str):
     end_time = datetime.now()
     execution_time = (end_time - start_time).total_seconds()
 
+    # Añadimos el log para obtener luego un reporte
     log = {
         "endpoint": "/analysis",
         "date": str(time.ctime()),
@@ -62,15 +85,33 @@ def analyze_text(text: str):
         "analysis": doc,
         "execution_time": execution_time,
     }
-
     execution_logs.append(log)
 
-    print(doc["entities"])
+    # Creamos la instancia que se guardará en la base de datos
+    report = Report(
+        endpoint="/analysis",
+        date=datetime.utcnow(),
+        text=text,
+        analysis=str(doc),
+        execution_time=execution_time,
+    )
+
+    # Añadimos el reporte a la db
+    db.add(report)
+    db.commit()
 
     if not doc["entities"]:
         return "Verifica que el texto enviado sea un texto jurídico!"
     else:
         return doc
+
+class Report(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    endpoint: str
+    date: datetime
+    text: str
+    analysis: str
+    execution_time: float
 
 @app.get("/reports")
 def generate_report():
