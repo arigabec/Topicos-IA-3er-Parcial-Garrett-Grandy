@@ -1,3 +1,0 @@
-endpoint,date,text,analysis,execution_time
-/analysis,Mon Dec 18 21:49:48 2023,camila,"{'entities': [{'entity': 'Camila', 'problematic': 'No juridic related problematic is provided'}]}",3.38109
-/analysis,Mon Dec 18 21:50:19 2023,hola,"{'entities': [{'entity': 'hola', 'problematic': 'This is often used as a greeting and is not juridics related.'}]}",2.173593
