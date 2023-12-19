@@ -2,13 +2,7 @@ fastapi
 uvicorn
 pydantic-settings
 openai==0.28
-langchain
 python-dotenv
 ruff
-numpy
-Pillow
 opencv-python-headless
-transformers
-spacy
-pytorch-lightning
-torch
+sqlmodel

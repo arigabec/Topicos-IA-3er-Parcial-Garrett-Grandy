@@ -6,7 +6,6 @@ from fastapi import (
 )
 import csv
 import time
-import spacy
 from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
 from src.config import get_settings
