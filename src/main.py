@@ -10,11 +10,11 @@ import spacy
 from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
 from src.config import get_settings
-from functools import cache
 from src.text_model import AnalysisModel
 from datetime import datetime
 from sqlmodel import Field, SQLModel, create_engine, Session
 from contextlib import asynccontextmanager
+from fastapi.responses import FileResponse
 
 sqlite_file = "db.sqlite3"
 sqlite_url = f"sqlite:///{sqlite_file}"
@@ -121,7 +121,7 @@ def generate_report():
             detail="Por el momento no existen reportes!"
         )
 
-    csv_file_path = "analysis_report.csv"
+    csv_file_path = "text_analysis_report.csv"
 
     with open(csv_file_path, mode="w", newline="") as csv_file:
         fieldnames = execution_logs[0].keys()
@@ -129,4 +129,4 @@ def generate_report():
         writer.writeheader()
         writer.writerows(execution_logs)
 
-    return FileResponse(csv_file_path, filename="analysis_report.csv", media_type="text/csv")
+    return FileResponse(csv_file_path, filename="text_analysis_report.csv", media_type="text/csv")

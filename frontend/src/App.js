@@ -47,6 +47,22 @@ function App() {
     </div>
   );
 
+  const downloadReports = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/reports");
+      const blob = await response.blob();
+
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(new Blob([blob]));
+      link.setAttribute("download", "analysis_report.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading reports:", error);
+    }
+  };
+
   return (
     <div>
       <div
@@ -71,6 +87,12 @@ function App() {
           ANALIZADOR DE TEXTOS JURIDICOS
         </h1>
       </div>
+      <div style={{ flex: 1, borderRight: "1px solid #000", padding: "10px", textAlign: "center", fontSize: "30px", fontFamily: "Arial", paddingLeft: "50px", paddingRight: "50px", backgroundColor: "rgba(255, 221, 171, 0.7)" }}>
+  <p>
+    Bienvenido al Analizador de Textos Jurídicos, desarrollado por Camila Grandy y Ariane Garrett. Este analizador procesa textos jurídicos y destaca las entidades clave para una mejor comprensión.
+  </p>
+</div>
+
 
       <div
         style={{
@@ -78,6 +100,7 @@ function App() {
           backgroundColor: "#FFDDAB",
           padding: "20px",
           textAlign: "center",
+          paddingBottom: "50px",
         }}
       >
         {/* Línea Horizontal 1 */}
@@ -118,7 +141,7 @@ function App() {
           )}
         </div>
       </div>
-
+      <hr style={{ padding: "0px", margin: "0px", border: "0px", borderTop: "1px solid #000" }} />
       <div
         style={{
           display: "flex",
@@ -130,6 +153,7 @@ function App() {
           textAlign: "center",
         }}
       >
+        
         {/* Línea Horizontal 2 */}
         <div style={{ flex: 1, borderRight: "1px solid #000", paddingRight: "15px", height: "100%", textAlign: "center" }}>
           <TextField
@@ -165,9 +189,36 @@ function App() {
           )}
         </div>
       </div>
-    </div>
-  );
-
+      <hr style={{ padding: "0px", margin: "0px", border: "0px", borderTop: "1px solid #000" }} />
+      {/* Nueva sección para /reports */}
+      <div
+  style={{
+    display: "flex",
+    backgroundColor: "#FFDDAB",
+    padding: "20px",
+    textAlign: "center",
+    paddingTop: "50px",
+  }}
+>
+  <div style={{ width: "50%", borderRight: "1px solid #000", paddingTop: "40px"}}>
+    <Button
+      variant="contained"
+      color="primary"
+      style={{ margin: "10px", height: "60px", fontSize: "20px", backgroundColor: "#B07C30" }}
+      onClick={downloadReports}
+    >
+      Download Reports
+    </Button>
+  </div>
+  <div style={{ width: "50%", padding: "10px", textAlign: "center", fontSize: "20px", fontFamily: "Arial", paddingLeft: "50px", paddingRight: "50px" }}>
+    <h2>Descripción:</h2>
+    <p>
+      Descargue los informes de análisis en formato CSV.
+    </p>
+  </div>
+</div>
+</div>
+);
 }
 
 export default App;
