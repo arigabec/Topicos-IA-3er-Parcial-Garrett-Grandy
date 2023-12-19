@@ -99,10 +99,12 @@ def analyze_text(text: str, db: Session = Depends(get_session)):
     db.add(report)
     db.commit()
 
+    print(doc["entities"])
+
     if not doc["entities"]:
-        return "Verifica que el texto enviado sea un texto jurídico!"
-    else:
-        return doc
+        doc["entities"] = [{"entity": "Verifica que el texto enviado sea un texto jurídico!"}]
+
+    return doc
 
 class Report(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
