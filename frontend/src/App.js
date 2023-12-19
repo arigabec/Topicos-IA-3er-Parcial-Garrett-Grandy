@@ -12,7 +12,7 @@ function App() {
     try {
       const requestBody = { text: text };
       console.log("Request Body:", requestBody.text);
-      const response = await fetch("http://127.0.0.1:8000/analysis?text=" + requestBody.text, {
+      const response = await fetch("https://topicos-ia-3er-parcial-garrett-grandy-h6vokikroq-ue.a.run.app/analysis?text=" + requestBody.text, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ function App() {
 
   const getStatus = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/status");
+      const response = await fetch("https://topicos-ia-3er-parcial-garrett-grandy-h6vokikroq-ue.a.run.app/status");
       const data = await response.json();
       setStatus(data);
     } catch (error) {
@@ -49,7 +49,7 @@ function App() {
 
   const downloadReports = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/reports");
+      const response = await fetch("https://topicos-ia-3er-parcial-garrett-grandy-h6vokikroq-ue.a.run.app/reports");
       const blob = await response.blob();
 
       const link = document.createElement("a");
