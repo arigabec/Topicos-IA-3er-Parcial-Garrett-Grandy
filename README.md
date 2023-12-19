@@ -38,7 +38,7 @@ resultado el POS Tagging y NER del texto. En este caso, el uso de este modelo fu
 sentimiento de los textos en diferentes idiomas (multilingue).
 
 ## Link de Google Cloud del Backend
-https://topicos-ia-3er-parcial-garrett-grandy-h6vokikroq-ue.a.run.app
+https://topicos-ia-3er-parcial-garrett-grandy-h6vokikroq-ue.a.run.app/docs
 
 ## Link de Google Cloud del Frontend
 
